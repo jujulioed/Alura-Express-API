@@ -1,6 +1,5 @@
 const { Router } = require("express");
-const { getBooks } = require("../Controllers/book");
-const { getBook } = require("../Controllers/book")
+const { getBooks, getBook, postBook } = require("../Controllers/book");
 
 const router = Router();
 
@@ -8,9 +7,7 @@ router.get("/", getBooks);
 
 router.get("/:id", getBook);
 
-router.post("/", (req, res) => {
-    res.send('Você fez uma requisição do tipo POST')
-})
+router.post("/", postBook)
 
 router.patch("/", (req, res) => {
     res.send('Você fez uma requisição do tipo PATCH')
