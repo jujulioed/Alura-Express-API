@@ -1,4 +1,4 @@
-const { getAllBooks, getBookById, insertBook } = require("../services/book");
+const { getAllBooks, getBookById, insertBook, modifyBook, deleteBook } = require("../services/book");
 
 function getBooks (req, res) {
     try {
@@ -13,8 +13,14 @@ function getBooks (req, res) {
 function getBook (req, res) {
     try {
         const id = req.params.id;
-        const book = getBookById(id);
-        res.send(book);
+
+        if(id && Number(id)) {
+            const book = getBookById(id);
+            res.send(book);
+        } else {
+            res.status(422);
+            res.send("Invalid Id");
+        }
     } catch (error) {
         res.status(500);
         res.send(error.message);
@@ -33,8 +39,46 @@ function postBook(req, res) {
     }
 }
 
+function patchBook(req, res) {
+    try {
+        const id = req.params.id;
+
+        if(id && Number(id)) {
+            const body = req.body;
+            modifyBook(body, id);
+            res.send("Livro modificado com sucesso")
+        } else {
+            res.status(422);
+            res.send("Invalid Id");
+        }
+        
+    } catch(error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
+function deleteBookById(req, res) {
+    try {
+        const id = req.params.id;
+
+        if(id && Number(id)) {
+            deleteBook(id);
+            res.send("Livro apagado com sucesso")
+        } else {
+            res.status(422);
+            res.send("Invalid Id");
+        }  
+    } catch(error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
 module.exports = {
     getBooks,
     getBook,
-    postBook
+    postBook,
+    patchBook,
+    deleteBookById
 }
